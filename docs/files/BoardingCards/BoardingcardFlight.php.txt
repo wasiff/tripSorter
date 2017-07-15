@@ -1,0 +1,64 @@
+<?php
+/**
+ * Class BoardingcardFlight
+ */
+
+namespace Wasif\tripSorter\BoardingCards;
+use Wasif\tripSorter\BoardingCards\BoardingcardAbstract;
+
+
+/**
+ * Class BoardingcardFlight
+ * Flight boarding that inherits BoardingcardAbstract
+ *
+ * @property-read string $flight saving Flight number
+ * @property-read string $gate Gate number to take the flight
+ * @property-read string $counter Optional counter for dropping off the luggage
+ *
+ * @package Wasif\TripSorter\BoardingCards
+ * @author Wasif Khalil <wk@wasiff.com>
+ */
+class BoardingcardFlight extends BoardingcardAbstract{
+    /**
+     * @var string
+	 * passenger flight number
+     */
+    /**
+     * @var string
+	 * passenger gate number
+     */
+    /**
+     * @var null|string
+	 * passenger counter number
+     */
+    private $flight, $gate, $counter;
+
+    /**
+     * Constructor for BoardingcardFlight
+     *
+     * @param string string $departureLoc Saves departure location of boarding pass
+     * @param string $arrivalLoc Saves Arrival location of boarding pass
+     * @param string $seatNo Seat number of boarding pass
+     * @param string $flight saving Flight number
+     * @param string $gate Gate number to take the flight
+     * @param string $counter Optional counter for dropping off the luggage
+     *
+     */
+    function __construct($departureLoc, $arrivalLoc, $seatNo, $flight, $gate, $counter = null){
+        parent::__construct($departureLoc, $arrivalLoc, $seatNo);
+
+        $this->flight = $flight;
+        $this->gate = $gate;
+        $this->counter = $counter;
+    }
+
+    /**
+     * String representation of the class object
+     *
+     */
+    public function toString(){
+        return 'From ' . $this->get('departureLoc') . ', take flight ' . $this->flight . ' to ' . $this->get('arrivalLoc') . '. Gate ' . $this->gate . ', seat ' . $this->get('seatNo') . '. ' . ($this->counter ? 'Baggage drop at ticket counter ' . $this->counter . '.' : 'Baggage will be automatically transferred from your last leg.');
+    }
+
+}
+

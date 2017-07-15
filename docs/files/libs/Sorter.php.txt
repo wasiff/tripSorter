@@ -1,0 +1,119 @@
+<?php
+/**
+ * Class Sorter
+ */
+
+namespace Wasif\tripSorter\libs;
+use Wasif\tripSorter\libs\SortInterface;
+
+/**
+ * Class Sorter
+ * Class responsible for sorting the trips
+ *
+ * @package Wasif\TripSorter\libs\Sorters
+ * @author Wasif Khalil <wk@wasiff.com>
+ */
+class Sorter implements SortInterface{
+
+    /**
+     * Sorter constructor.
+     */
+    function __construct(){}
+
+    /**
+     * Method with the sorting algorithm of the trips array
+     *
+     * @param array $items
+     * @return array $sortedBaseBoardingCards
+     */
+    public static function sort(array $items){
+        /*
+         *  Saving departure and Arrival index for easy sorting
+        */
+        $departureIndex = self::createDepartureIndex($items);
+        $arrivalIndex = self::createArrivalIndex($items);
+
+        /*
+         * getting starting location.
+         */
+        $startingLocation = self::getStartingLocation($items, $arrivalIndex);
+
+        /*
+         *  Check tbe boarding passes from starting location.
+         */
+
+        $sortedBaseBoardingCards = array();
+        $currentLocation = $startingLocation;
+        /*
+         * Checking for undefined index and assiging boarding pass
+         */
+        while ($currentBaseBoardingCard = (array_key_exists($currentLocation, $departureIndex)) ? $departureIndex[$currentLocation] : null) {
+            /*
+             *  Add the boarding pass to our sorted list.
+             */
+            array_push($sortedBaseBoardingCards, $currentBaseBoardingCard);
+
+            /*
+             *  Get our next location.
+             */
+            $currentLocation = $currentBaseBoardingCard->get('arrivalLoc');
+        }
+
+        return $sortedBaseBoardingCards;
+    }
+
+    /**
+     *
+     * This function creates an associative array of the randomly arranged boarding passes
+     * Wth the departure locations being the key for the arrays
+     *
+     * @param array $boardingCards
+     */
+    static function createDepartureIndex($boardingCards)
+    {
+        foreach ($boardingCards as $baseBoardingCard) {
+            $departureIndex[$baseBoardingCard->get('departureLoc')] = $baseBoardingCard;
+        }
+        return $departureIndex;
+
+    }
+
+
+    /**
+     * put all boaring passes in an associative array and being the arrival location
+     *
+     * @param $boardingCards
+     * @return mixed
+     */
+    static function createArrivalIndex($boardingCards)
+        {
+            foreach ($boardingCards as $baseBoardingCard) {
+                $arrivalIndex[$baseBoardingCard->get('arrivalLoc')] = $baseBoardingCard;
+            }
+            return $arrivalIndex;
+
+        }
+
+    /**
+	 * getting the departure location of trip index
+     * @param $baseBoardingCards
+     * @param $arrivalIndex
+     * @return mixed, string $departureLoc which contains the starting location for the whole trip
+     */
+    private static function getStartingLocation($baseBoardingCards, $arrivalIndex)
+    {
+        foreach($baseBoardingCards as $baseBoardingCard){
+            $departureLoc = $baseBoardingCard->get('departureLoc');
+
+            /*
+             * if there is no arrival location of the depart location that means if the first trip
+             */
+
+            if (!array_key_exists($departureLoc, $arrivalIndex)) {
+                return $departureLoc;
+            }
+        }
+        return null;
+    }
+}
+

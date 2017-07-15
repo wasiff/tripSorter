@@ -1,0 +1,74 @@
+<?php
+
+/**
+ * Class BoardingcardAbstract
+ *
+ */
+
+namespace Wasif\tripSorter\BoardingCards;
+
+/**
+ * Class BoardingcardAbstract
+ *
+ * Each transportation method will extend BoardingcardAbstract and add its own implementation of method and properties
+ *
+ * @property-read string $departureLoc Saves departure location of boarding pass
+ * @property-read string $arrivalLoc Saves Arrival location of boarding pass
+ * @property-read string $seatNo Seat number of boarding pass
+ * @package Wasif\tripSorter
+ * @author Wasif Khalil <wk@wasiff.com>
+ *
+ */
+abstract class BoardingcardAbstract{
+	
+    /**
+     * @var string
+	 *
+	 * saving departure location of the passenger
+     */
+    protected  $departureLoc;
+    /**
+     * @var string
+	 * saving arrival location of the passenger
+     */
+    protected  $arrivalLoc;
+    /**
+     * @var string
+	 * saving seat number of the passenger
+     */
+    protected  $seatNo;
+	
+    /**
+     * BoardingcardAbstract Constructor
+     *
+     * @param string string $departureLoc Saves departure location of boarding pass
+     * @param string $arrivalLoc Saves Arrival location of boarding pass
+     * @param string $seatNo Seat number of boarding pass
+	 *
+     */
+    function __construct($departureLoc, $arrivalLoc, $seatNo){
+        $this->departureLoc = $departureLoc;
+        $this->arrivalLoc = $arrivalLoc;
+        $this->seatNo = $seatNo;
+    }
+
+    /**
+	 * setter method of the properties
+     * @param $name
+     * @param $value
+	 */
+    public function set($name, $value){
+        $this->$name = $value;
+    }
+
+    /**
+	 * getter method of the properties
+     * @param $name
+     * @return mixed
+     */
+    public function get($name){
+        return $this->$name;
+    }
+
+}
+
